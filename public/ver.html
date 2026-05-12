@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Muro de Conchi - 60 Cumpleaños</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
             --oro: #b8860b;
@@ -17,57 +18,66 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--rosa-fondo);
-            background-image: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
+            background-image: 
+                radial-gradient(circle at 20% 20%, rgba(248, 187, 208, 0.4) 0%, transparent 40%),
+                radial-gradient(circle at 80% 80%, rgba(248, 187, 208, 0.4) 0%, transparent 40%);
+            background-attachment: fixed;
             color: var(--negro);
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            overflow-x: hidden;
         }
 
         header {
-            padding: 40px 20px;
+            padding: 50px 20px;
             text-align: center;
+            animation: fadeInDown 1s ease-out;
         }
 
-        /* FOTO DE LA CUMPLEAÑERA */
         .foto-cumpleanera {
-            width: 160px;
-            height: 160px;
+            width: 170px;
+            height: 170px;
             object-fit: cover;
             border-radius: 50%;
-            border: 5px solid var(--oro);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
+            border: 6px solid var(--oro);
+            box-shadow: 0 10px 30px rgba(184, 134, 11, 0.3);
+            margin-bottom: 25px;
             display: inline-block;
+            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            cursor: pointer;
+        }
+
+        .foto-cumpleanera:hover {
+            transform: scale(1.1) rotate(5deg);
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
+            font-size: 2.8rem;
             color: var(--negro);
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 1px;
-            line-height: 1.2;
+            letter-spacing: 2px;
+            line-height: 1.1;
         }
 
         .subtitle {
+            font-family: 'Pacifico', cursive;
             color: var(--oro);
-            font-size: 1.2rem;
-            margin-top: 10px;
-            font-weight: 600;
-            letter-spacing: 4px;
-            text-transform: uppercase;
+            font-size: 1.8rem;
+            margin-top: 15px;
+            font-weight: 400;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1400px;
             margin: 0 auto;
-            padding: 10px;
+            padding: 20px;
         }
 
         .controls {
-            margin: 25px 0;
+            margin-bottom: 40px;
             text-align: center;
         }
 
@@ -75,90 +85,120 @@
             background: var(--blanco);
             color: var(--negro);
             border: 2px solid var(--negro);
-            padding: 10px 22px;
+            padding: 12px 28px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
             display: inline-block;
-            transition: 0.3s;
-            margin: 5px;
-            font-size: 0.9rem;
+            transition: all 0.3s ease;
+            margin: 8px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
         }
 
         .btn:hover {
             background: var(--negro);
             color: var(--rosa-fondo);
+            transform: translateY(-3px);
+            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 35px;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 40px;
             padding: 20px;
         }
 
-        /* Estilo Polaroid */
+        /* Estilo Polaroid Mejorado */
         .foto-card {
             background: var(--blanco);
-            padding: 15px 15px 45px 15px;
-            border-radius: 4px;
-            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
-            transition: transform 0.4s ease;
+            padding: 15px 15px 50px 15px;
+            border-radius: 2px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            opacity: 0;
+            animation: appear 0.8s forwards;
+            cursor: zoom-in;
         }
 
-        .foto-card:nth-child(3n+1) { transform: rotate(-2deg); }
-        .foto-card:nth-child(3n+2) { transform: rotate(3deg); }
-        .foto-card:nth-child(3n+3) { transform: rotate(-1.5deg); }
+        @keyframes appear {
+            from { opacity: 0; transform: translateY(30px) scale(0.9); }
+            to { opacity: 1; transform: translateY(0) scale(1); }
+        }
+
+        .foto-card:nth-child(even) { transform: rotate(2deg); }
+        .foto-card:nth-child(odd) { transform: rotate(-2deg); }
 
         .foto-card:hover {
-            transform: rotate(0deg) scale(1.08);
-            z-index: 10;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+            transform: rotate(0deg) scale(1.1) translateY(-10px);
+            z-index: 100;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
         }
 
         .foto-card img {
             width: 100%;
-            height: 280px;
+            height: 300px;
             object-fit: cover;
-            border: 1px solid #f9f9f9;
+            filter: sepia(10%) contrast(105%);
+            transition: filter 0.3s;
+        }
+
+        .foto-card:hover img {
+            filter: sepia(0%) contrast(110%);
+        }
+
+        @keyframes fadeInDown {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         #loader {
+            font-size: 1.2rem;
             color: var(--negro);
-            font-weight: 600;
-            margin-top: 20px;
             text-align: center;
+            margin: 50px;
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 1.6rem; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px; }
-            .foto-card img { height: 200px; }
-            .foto-cumpleanera { width: 130px; height: 130px; }
+            h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
+            .foto-card img { height: 220px; }
+            .foto-cumpleanera { width: 140px; height: 140px; }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <img src="https://res.cloudinary.com/dy9hxg3za/image/upload/v1778623228/unnamed_k5jgyz.jpg" alt="Cumpleañera" class="foto-cumpleanera">
+        <img src="https://res.cloudinary.com/dy9hxg3za/image/upload/v1778622882/Captura_de_pantalla_1_irwqdx.png" 
+             alt="Conchi" class="foto-cumpleanera" onclick="lanzarConfeti()">
         
-        <h1>Sube tus recuerdos en el<br>60 Cumpleaños de Conchi</h1>
-        <div class="subtitle">Muro de Recuerdos</div>
+        <h1>60 Cumpleaños de Conchi</h1>
+        <div class="subtitle">Muro de Recuerdos Mágicos</div>
     </header>
 
     <div class="container">
         <div class="controls">
-            <a href="/" class="btn">📸 SUBIR MÁS FOTOS</a>
-            <button class="btn" onclick="cargarFotos()">🔄 REFRESCAR MURO</button>
+            <a href="/" class="btn">✨ SUBIR MI MOMENTO</a>
+            <button class="btn" onclick="cargarFotos(); lanzarConfeti();">🔄 ACTUALIZAR MURO</button>
         </div>
 
-        <div id="loader">Cargando el muro de gala...</div>
+        <div id="loader">Buscando recuerdos...</div>
         <div class="grid" id="galeria"></div>
     </div>
 
     <script>
+        // Función para lanzar confeti dorado y rosa
+        function lanzarConfeti() {
+            confetti({
+                particleCount: 100,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#b8860b', '#f8bbd0', '#ffffff']
+            });
+        }
+
         async function cargarFotos() {
             const grid = document.getElementById('galeria');
             const loader = document.getElementById('loader');
@@ -168,27 +208,37 @@
                 const fotos = await res.json();
                 
                 loader.style.display = 'none';
+                
+                // Si hay fotos nuevas, las añadimos con un retraso para el efecto visual
                 grid.innerHTML = ''; 
 
                 if (fotos.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">¡El muro está esperando la primera foto para Conchi! 🎂</p>';
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-size: 1.2rem;">¡El álbum está vacío! Sé el primero en dejar un recuerdo. 🎂</p>';
                     return;
                 }
 
-                fotos.forEach(url => {
-                    const card = document.createElement('div');
-                    card.className = 'foto-card';
-                    card.innerHTML = `<img src="${url}" alt="Recuerdo">`;
-                    grid.appendChild(card);
+                fotos.forEach((url, index) => {
+                    setTimeout(() => {
+                        const card = document.createElement('div');
+                        card.className = 'foto-card';
+                        card.style.animationDelay = `${index * 0.1}s`;
+                        card.innerHTML = `<img src="${url}" alt="Recuerdo">`;
+                        grid.appendChild(card);
+                    }, index * 50);
                 });
             } catch (e) {
-                console.error(e);
-                loader.innerText = "Error al conectar con la galería.";
+                loader.innerText = "Error al conectar con los recuerdos.";
             }
         }
 
-        cargarFotos();
-        setInterval(cargarFotos, 25000); // Actualización automática
+        // Lanzar confeti al abrir la página
+        window.onload = () => {
+            cargarFotos();
+            setTimeout(lanzarConfeti, 1000);
+        };
+
+        // Auto-actualizar cada 30 segundos
+        setInterval(cargarFotos, 30000);
     </script>
 </body>
 </html>
