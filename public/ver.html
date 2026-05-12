@@ -7,7 +7,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --oro: #b8860b; /* Un dorado un poco más intenso para que se lea bien sobre rosa */
+            --oro: #b8860b;
             --negro: #2d3436;
             --rosa-fondo: #fce4ec; 
             --rosa-oscuro: #f8bbd0;
@@ -17,7 +17,6 @@
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--rosa-fondo);
-            /* Degradado sutil de rosa para que no sea plano */
             background-image: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
             color: var(--negro);
             margin: 0;
@@ -26,25 +25,38 @@
         }
 
         header {
-            padding: 60px 20px 30px 20px;
+            padding: 40px 20px;
             text-align: center;
+        }
+
+        /* FOTO DE LA CUMPLEAÑERA */
+        .foto-cumpleanera {
+            width: 160px;
+            height: 160px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 5px solid var(--oro);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            margin-bottom: 20px;
+            display: inline-block;
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.5rem;
-            color: var(--negro); /* Letras en negro como pediste */
+            font-size: 2.2rem;
+            color: var(--negro);
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 1px;
+            line-height: 1.2;
         }
 
         .subtitle {
-            color: var(--oro); /* Detalle en dorado */
-            font-size: 1.3rem;
+            color: var(--oro);
+            font-size: 1.2rem;
             margin-top: 10px;
             font-weight: 600;
-            letter-spacing: 5px;
+            letter-spacing: 4px;
             text-transform: uppercase;
         }
 
@@ -54,42 +66,8 @@
             padding: 10px;
         }
 
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 30px;
-            padding: 20px;
-        }
-
-        /* Efecto Polaroid */
-        .foto-card {
-            background: var(--blanco);
-            padding: 15px 15px 45px 15px;
-            border-radius: 5px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-        }
-
-        /* Rotación aleatoria para que parezcan fotos tiradas sobre una mesa rosa */
-        .foto-card:nth-child(3n+1) { transform: rotate(-3deg); }
-        .foto-card:nth-child(3n+2) { transform: rotate(2deg); }
-        .foto-card:nth-child(3n+3) { transform: rotate(-1deg); }
-
-        .foto-card:hover {
-            transform: rotate(0deg) scale(1.1);
-            z-index: 10;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
-        }
-
-        .foto-card img {
-            width: 100%;
-            height: 280px;
-            object-fit: cover;
-            border: 1px solid #fdfdfd;
-        }
-
         .controls {
-            margin: 20px 0;
+            margin: 25px 0;
             text-align: center;
         }
 
@@ -97,7 +75,7 @@
             background: var(--blanco);
             color: var(--negro);
             border: 2px solid var(--negro);
-            padding: 12px 25px;
+            padding: 10px 22px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
@@ -105,6 +83,7 @@
             display: inline-block;
             transition: 0.3s;
             margin: 5px;
+            font-size: 0.9rem;
         }
 
         .btn:hover {
@@ -112,22 +91,59 @@
             color: var(--rosa-fondo);
         }
 
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+            gap: 35px;
+            padding: 20px;
+        }
+
+        /* Estilo Polaroid */
+        .foto-card {
+            background: var(--blanco);
+            padding: 15px 15px 45px 15px;
+            border-radius: 4px;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.12);
+            transition: transform 0.4s ease;
+        }
+
+        .foto-card:nth-child(3n+1) { transform: rotate(-2deg); }
+        .foto-card:nth-child(3n+2) { transform: rotate(3deg); }
+        .foto-card:nth-child(3n+3) { transform: rotate(-1.5deg); }
+
+        .foto-card:hover {
+            transform: rotate(0deg) scale(1.08);
+            z-index: 10;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+
+        .foto-card img {
+            width: 100%;
+            height: 280px;
+            object-fit: cover;
+            border: 1px solid #f9f9f9;
+        }
+
         #loader {
             color: var(--negro);
             font-weight: 600;
             margin-top: 20px;
+            text-align: center;
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+            h1 { font-size: 1.6rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(170px, 1fr)); gap: 15px; }
             .foto-card img { height: 200px; }
+            .foto-cumpleanera { width: 130px; height: 130px; }
         }
     </style>
 </head>
 <body>
 
     <header>
+        <img src="https://res.cloudinary.com/dy9hxg3za/image/upload/v1778622882/Captura_de_pantalla_1_irwqdx.png" alt="Cumpleañera" class="foto-cumpleanera">
+        
         <h1>Sube tus recuerdos en el<br>60 Cumpleaños de Conchi</h1>
         <div class="subtitle">Muro de Recuerdos</div>
     </header>
@@ -138,7 +154,7 @@
             <button class="btn" onclick="cargarFotos()">🔄 REFRESCAR MURO</button>
         </div>
 
-        <div id="loader" style="text-align: center;">Buscando fotos bonitas...</div>
+        <div id="loader">Cargando el muro de gala...</div>
         <div class="grid" id="galeria"></div>
     </div>
 
@@ -155,7 +171,7 @@
                 grid.innerHTML = ''; 
 
                 if (fotos.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">¡El muro está vacío! Sube la primera foto para Conchi. 🎂</p>';
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">¡El muro está esperando la primera foto para Conchi! 🎂</p>';
                     return;
                 }
 
@@ -172,8 +188,7 @@
         }
 
         cargarFotos();
-        // Se actualiza cada 30 segundos automáticamente
-        setInterval(cargarFotos, 30000);
+        setInterval(cargarFotos, 25000); // Actualización automática
     </script>
 </body>
 </html>
