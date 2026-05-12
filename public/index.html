@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sube tus Fotos</title>
+    <style>
+        body { font-family: sans-serif; background: #f0f2f5; display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0; }
+        .card { background: white; padding: 30px; border-radius: 20px; text-align: center; box-shadow: 0 4px 15px rgba(0,0,0,0.1); width: 90%; max-width: 400px; }
+        button { background: #0084ff; color: white; border: none; padding: 15px 25px; border-radius: 10px; font-size: 16px; cursor: pointer; width: 100%; }
+        #status { margin-top: 15px; color: #555; }
+    </style>
+</head>
+<body>
+    <div class="card">
+        <h2>📸 ¡Sube tus fotos!</h2>
+        <input type="file" id="fotos" multiple accept="image/*" style="margin-bottom: 20px;">
+        <button id="btn" onclick="subir()">Enviar Fotos</button>
+        <p id="status"></p>
+    </div>
+
+    <script>
+        async function subir() {
+            const btn = document.getElementById('btn');
+            const status = document.getElementById('status');
+            const input = document.getElementById('fotos');
+            
+            if (input.files.length === 0) return alert("Elige alguna foto primero");
+
+            const formData = new FormData();
+            for (let file of input.files) { formData.append('fotos', file); }
+
+            btn.disabled = true;
+            status.innerText = "Subiendo... espera un momento ⏳";
+
+            try {
+                const response = await fetch('/upload', { method: 'POST', body: formData });
+                if (response.ok) {
+                    status.innerText = "✅ ¡Listo! Muchas gracias.";
+                    input.value = "";
+                }
+            } catch (e) {
+                status.innerText = "❌ Error al subir.";
+            } finally {
+                btn.disabled = false;
+            }
+        }
+    </script>
+</body>
+</html>
