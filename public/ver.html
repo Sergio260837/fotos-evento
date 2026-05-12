@@ -9,6 +9,7 @@
     <style>
         :root {
             --oro: #b8860b;
+            --oro-claro: #eec25e;
             --negro: #2d3436;
             --rosa-fondo: #fce4ec; 
             --rosa-oscuro: #f8bbd0;
@@ -27,47 +28,79 @@
             padding: 0;
             min-height: 100vh;
             overflow-x: hidden;
+            cursor: url('https://cdn-icons-png.flaticon.com/32/1077/1077035.png'), auto;
+        }
+
+        /* Elementos flotantes de fondo */
+        .floating-bg {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bubble {
+            position: absolute;
+            bottom: -100px;
+            background: rgba(184, 134, 11, 0.1);
+            border-radius: 50%;
+            animation: rise 15s infinite ease-in;
+        }
+
+        @keyframes rise {
+            0% { transform: translateY(0) scale(0.5); opacity: 0; }
+            50% { opacity: 0.5; }
+            100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
         }
 
         header {
-            padding: 50px 20px;
+            padding: 60px 20px;
             text-align: center;
-            animation: fadeInDown 1s ease-out;
+            animation: fadeInDown 1.2s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .foto-cumpleanera {
-            width: 170px;
-            height: 170px;
+            width: 180px;
+            height: 180px;
             object-fit: cover;
             border-radius: 50%;
             border: 6px solid var(--oro);
-            box-shadow: 0 10px 30px rgba(184, 134, 11, 0.3);
+            box-shadow: 0 15px 35px rgba(184, 134, 11, 0.4);
             margin-bottom: 25px;
             display: inline-block;
-            transition: transform 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            transition: all 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
             cursor: pointer;
+            position: relative;
         }
 
-        .foto-cumpleanera:hover { transform: scale(1.1) rotate(5deg); }
+        .foto-cumpleanera:hover { 
+            transform: scale(1.15) rotate(8deg);
+            border-color: var(--negro);
+        }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.8rem;
+            font-size: clamp(2rem, 8vw, 3.5rem);
             color: var(--negro);
             margin: 0;
             text-transform: uppercase;
-            letter-spacing: 2px;
+            letter-spacing: 3px;
             line-height: 1.1;
+            text-shadow: 2px 2px 0px rgba(255,255,255,0.5);
         }
 
-        /* ESTILO MÁQUINA DE ESCRIBIR */
         .subtitle {
             font-family: 'Special Elite', cursive;
             color: var(--oro);
-            font-size: 1.6rem;
+            font-size: clamp(1rem, 4vw, 1.8rem);
             margin-top: 15px;
             font-weight: 400;
-            letter-spacing: 1px;
+            letter-spacing: 2px;
+            background: rgba(255,255,255,0.3);
+            display: inline-block;
+            padding: 5px 20px;
+            border-radius: 10px;
         }
 
         .container {
@@ -77,7 +110,7 @@
         }
 
         .controls {
-            margin-bottom: 40px;
+            margin-bottom: 50px;
             text-align: center;
         }
 
@@ -85,102 +118,174 @@
             background: var(--blanco);
             color: var(--negro);
             border: 2px solid var(--negro);
-            padding: 12px 28px;
+            padding: 14px 35px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
             display: inline-block;
-            transition: all 0.3s ease;
-            margin: 8px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            margin: 10px;
+            box-shadow: 0 6px 0px var(--negro);
+            position: relative;
+            top: 0;
         }
 
         .btn:hover {
+            top: -4px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.15);
             background: var(--negro);
             color: var(--rosa-fondo);
-            transform: translateY(-3px);
-            box-shadow: 0 6px 15px rgba(0,0,0,0.2);
+        }
+
+        .btn:active {
+            top: 2px;
+            box-shadow: 0 2px 0px var(--negro);
         }
 
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 40px;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 45px;
             padding: 20px;
         }
 
         .foto-card {
             background: var(--blanco);
-            padding: 15px 15px 50px 15px;
+            padding: 15px 15px 60px 15px;
             border-radius: 2px;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-            transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.1);
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
             opacity: 0;
-            animation: appear 0.8s forwards;
-            cursor: zoom-in;
+            animation: appear 1s forwards;
+            position: relative;
+            overflow: hidden;
         }
+
+        .foto-card::after {
+            content: "❤️";
+            position: absolute;
+            bottom: 15px;
+            right: 20px;
+            font-size: 1.5rem;
+            opacity: 0.2;
+            transition: 0.3s;
+        }
+
+        .foto-card:hover::after { opacity: 1; transform: scale(1.2); }
 
         @keyframes appear {
-            from { opacity: 0; transform: translateY(30px) scale(0.9); }
-            to { opacity: 1; transform: translateY(0) scale(1); }
+            from { opacity: 0; transform: translateY(50px) rotate(5deg); }
+            to { opacity: 1; transform: translateY(0) rotate(var(--rotation)); }
         }
 
-        .foto-card:nth-child(even) { transform: rotate(2deg); }
-        .foto-card:nth-child(odd) { transform: rotate(-2deg); }
-
         .foto-card:hover {
-            transform: rotate(0deg) scale(1.1) translateY(-10px);
+            transform: rotate(0deg) scale(1.1) translateY(-15px) !important;
             z-index: 100;
-            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            box-shadow: 0 30px 60px rgba(184, 134, 11, 0.3);
+            outline: 2px solid var(--oro);
         }
 
         .foto-card img {
             width: 100%;
-            height: 300px;
+            height: 320px;
             object-fit: cover;
-            filter: sepia(10%) contrast(105%);
+            filter: grayscale(30%) sepia(20%);
+            transition: 0.5s;
+        }
+
+        .foto-card:hover img {
+            filter: grayscale(0%) sepia(0%);
         }
 
         @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
+            from { opacity: 0; transform: translateY(-30px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        #loader { text-align: center; margin: 50px; font-family: 'Special Elite'; }
+        #loader { 
+            text-align: center; 
+            margin: 50px; 
+            font-family: 'Special Elite'; 
+            font-size: 1.5rem;
+            color: var(--oro);
+        }
 
         @media (max-width: 600px) {
-            h1 { font-size: 1.8rem; }
-            .subtitle { font-size: 1.2rem; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-            .foto-card img { height: 220px; }
+            .grid { grid-template-columns: 1fr; gap: 30px; }
+            .foto-card img { height: 280px; }
+            h1 { font-size: 2rem; }
         }
     </style>
 </head>
 <body>
 
+    <div class="floating-bg" id="bg-elements"></div>
+
     <header>
-        <img src="https://res.cloudinary.com/dy9hxg3za/image/upload/v1778623228/unnamed_k5jgyz.jpg" 
-             alt="Conchi" class="foto-cumpleanera" onclick="lanzarConfeti()">
-        
+        <div class="foto-cumpleanera-container">
+            <img src="https://res.cloudinary.com/dy9hxg3za/image/upload/v1778623228/unnamed_k5jgyz.jpg" 
+                 alt="Conchi" class="foto-cumpleanera" onclick="superConfeti()">
+        </div>
         <h1>60 Cumpleaños de Conchi</h1>
         <div class="subtitle">Muro de Recuerdos Mágicos</div>
     </header>
 
     <div class="container">
         <div class="controls">
-            <a href="/" class="btn">✨ SUBIR MI MOMENTO</a>
-            <button class="btn" onclick="cargarFotos(); lanzarConfeti();">🔄 ACTUALIZAR MURO</button>
+            <a href="/" class="btn">✨ SUBIR MOMENTO</a>
+            <button class="btn" onclick="actualizarTodo()">🔄 REFRESCAR MURO</button>
         </div>
 
-        <div id="loader">Buscando recuerdos...</div>
+        <div id="loader">Desempolvando las fotos... 📸</div>
         <div class="grid" id="galeria"></div>
     </div>
 
     <script>
-        function lanzarConfeti() {
+        // Crear elementos flotantes de fondo
+        function createBg() {
+            const bg = document.getElementById('bg-elements');
+            for(let i=0; i<15; i++) {
+                let b = document.createElement('div');
+                b.className = 'bubble';
+                let size = Math.random() * 50 + 20;
+                b.style.width = size + 'px';
+                b.style.height = size + 'px';
+                b.style.left = Math.random() * 100 + '%';
+                b.style.animationDelay = Math.random() * 10 + 's';
+                bg.appendChild(b);
+            }
+        }
+
+        function superConfeti() {
+            var duration = 3 * 1000;
+            var end = Date.now() + duration;
+
+            (function frame() {
+              confetti({
+                particleCount: 3,
+                angle: 60,
+                spread: 55,
+                origin: { x: 0 },
+                colors: ['#b8860b', '#f8bbd0']
+              });
+              confetti({
+                particleCount: 3,
+                angle: 120,
+                spread: 55,
+                origin: { x: 1 },
+                colors: ['#ffffff', '#b8860b']
+              });
+
+              if (Date.now() < end) {
+                requestAnimationFrame(frame);
+              }
+            }());
+        }
+
+        function lanzarConfetiSimple() {
             confetti({
-                particleCount: 100,
+                particleCount: 150,
                 spread: 70,
                 origin: { y: 0.6 },
                 colors: ['#b8860b', '#f8bbd0', '#ffffff']
@@ -195,28 +300,45 @@
                 const fotos = await res.json();
                 loader.style.display = 'none';
                 grid.innerHTML = ''; 
+                
                 if (fotos.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-family: \'Special Elite\';">¡El álbum está vacío! Sé el primero. 🎂</p>';
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-family: \'Special Elite\'; font-size: 1.5rem;">¡Aún no hay fotos! Estrena el muro tú. 🎂</p>';
                     return;
                 }
+
                 fotos.forEach((url, index) => {
                     setTimeout(() => {
                         const card = document.createElement('div');
                         card.className = 'foto-card';
+                        // Rotación aleatoria guardada en variable CSS
+                        const rot = (Math.random() * 6 - 3).toFixed(2);
+                        card.style.setProperty('--rotation', `${rot}deg`);
                         card.style.animationDelay = `${index * 0.1}s`;
+                        card.onclick = () => {
+                            lanzarConfetiSimple();
+                            card.style.transform = "scale(1.2) rotate(0deg)";
+                        };
                         card.innerHTML = `<img src="${url}" alt="Recuerdo">`;
                         grid.appendChild(card);
-                    }, index * 50);
+                    }, index * 100);
                 });
             } catch (e) {
-                loader.innerText = "Error al conectar con los recuerdos.";
+                loader.innerText = "¡Vaya! Hubo un problema al traer las fotos.";
             }
         }
 
-        window.onload = () => {
+        function actualizarTodo() {
+            superConfeti();
             cargarFotos();
-            setTimeout(lanzarConfeti, 1000);
+        }
+
+        window.onload = () => {
+            createBg();
+            cargarFotos();
+            setTimeout(lanzarConfetiSimple, 1500);
         };
+
+        // Auto-actualizar cada 30 seg
         setInterval(cargarFotos, 30000);
     </script>
 </body>
