@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>El Muro de Conchi - 60 Cumpleaños</title>
-    <link href="https://fonts.googleapis.com/css2?family=Pacifico&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Special+Elite&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.5.1/dist/confetti.browser.min.js"></script>
     <style>
         :root {
@@ -48,9 +48,7 @@
             cursor: pointer;
         }
 
-        .foto-cumpleanera:hover {
-            transform: scale(1.1) rotate(5deg);
-        }
+        .foto-cumpleanera:hover { transform: scale(1.1) rotate(5deg); }
 
         h1 {
             font-family: 'Playfair Display', serif;
@@ -62,12 +60,14 @@
             line-height: 1.1;
         }
 
+        /* ESTILO MÁQUINA DE ESCRIBIR */
         .subtitle {
-            font-family: 'Pacifico', cursive;
+            font-family: 'Special Elite', cursive;
             color: var(--oro);
-            font-size: 1.8rem;
+            font-size: 1.6rem;
             margin-top: 15px;
             font-weight: 400;
+            letter-spacing: 1px;
         }
 
         .container {
@@ -110,7 +110,6 @@
             padding: 20px;
         }
 
-        /* Estilo Polaroid Mejorado */
         .foto-card {
             background: var(--blanco);
             padding: 15px 15px 50px 15px;
@@ -141,11 +140,6 @@
             height: 300px;
             object-fit: cover;
             filter: sepia(10%) contrast(105%);
-            transition: filter 0.3s;
-        }
-
-        .foto-card:hover img {
-            filter: sepia(0%) contrast(110%);
         }
 
         @keyframes fadeInDown {
@@ -153,18 +147,13 @@
             to { opacity: 1; transform: translateY(0); }
         }
 
-        #loader {
-            font-size: 1.2rem;
-            color: var(--negro);
-            text-align: center;
-            margin: 50px;
-        }
+        #loader { text-align: center; margin: 50px; font-family: 'Special Elite'; }
 
         @media (max-width: 600px) {
             h1 { font-size: 1.8rem; }
+            .subtitle { font-size: 1.2rem; }
             .grid { grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
             .foto-card img { height: 220px; }
-            .foto-cumpleanera { width: 140px; height: 140px; }
         }
     </style>
 </head>
@@ -189,7 +178,6 @@
     </div>
 
     <script>
-        // Función para lanzar confeti dorado y rosa
         function lanzarConfeti() {
             confetti({
                 particleCount: 100,
@@ -202,21 +190,15 @@
         async function cargarFotos() {
             const grid = document.getElementById('galeria');
             const loader = document.getElementById('loader');
-            
             try {
                 const res = await fetch('/galeria');
                 const fotos = await res.json();
-                
                 loader.style.display = 'none';
-                
-                // Si hay fotos nuevas, las añadimos con un retraso para el efecto visual
                 grid.innerHTML = ''; 
-
                 if (fotos.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-size: 1.2rem;">¡El álbum está vacío! Sé el primero en dejar un recuerdo. 🎂</p>';
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center; font-family: \'Special Elite\';">¡El álbum está vacío! Sé el primero. 🎂</p>';
                     return;
                 }
-
                 fotos.forEach((url, index) => {
                     setTimeout(() => {
                         const card = document.createElement('div');
@@ -231,13 +213,10 @@
             }
         }
 
-        // Lanzar confeti al abrir la página
         window.onload = () => {
             cargarFotos();
             setTimeout(lanzarConfeti, 1000);
         };
-
-        // Auto-actualizar cada 30 segundos
         setInterval(cargarFotos, 30000);
     </script>
 </body>
