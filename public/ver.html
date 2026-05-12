@@ -7,47 +7,45 @@
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --oro: #d4af37;
-            --oro-brillante: #f9e29d;
-            --negro: #1a1a1a;
-            --rosa-fondo: #fce4ec; /* Rosa suave pastel */
+            --oro: #b8860b; /* Un dorado un poco más intenso para que se lea bien sobre rosa */
+            --negro: #2d3436;
+            --rosa-fondo: #fce4ec; 
+            --rosa-oscuro: #f8bbd0;
             --blanco: #ffffff;
         }
 
         body {
             font-family: 'Poppins', sans-serif;
             background-color: var(--rosa-fondo);
+            /* Degradado sutil de rosa para que no sea plano */
+            background-image: linear-gradient(135deg, #fce4ec 0%, #f8bbd0 100%);
             color: var(--negro);
             margin: 0;
             padding: 0;
             min-height: 100vh;
         }
 
-        /* Cabecera en Negro y Oro para que contraste con el rosa */
         header {
-            padding: 40px 20px;
+            padding: 60px 20px 30px 20px;
             text-align: center;
-            background: var(--negro);
-            border-bottom: 4px solid var(--oro);
-            margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.2);
         }
 
         h1 {
             font-family: 'Playfair Display', serif;
-            font-size: 2.2rem;
-            color: var(--oro-brillante);
+            font-size: 2.5rem;
+            color: var(--negro); /* Letras en negro como pediste */
             margin: 0;
-            letter-spacing: 1px;
             text-transform: uppercase;
+            letter-spacing: 2px;
         }
 
         .subtitle {
-            color: var(--oro);
-            font-size: 1.1rem;
+            color: var(--oro); /* Detalle en dorado */
+            font-size: 1.3rem;
             margin-top: 10px;
-            font-weight: 300;
-            letter-spacing: 3px;
+            font-weight: 600;
+            letter-spacing: 5px;
+            text-transform: uppercase;
         }
 
         .container {
@@ -59,32 +57,35 @@
         .grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-            gap: 25px;
+            gap: 30px;
             padding: 20px;
         }
 
-        /* Estilo Polaroid */
+        /* Efecto Polaroid */
         .foto-card {
             background: var(--blanco);
-            padding: 12px 12px 35px 12px;
-            border-radius: 2px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.15);
-            transition: transform 0.3s ease;
+            padding: 15px 15px 45px 15px;
+            border-radius: 5px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
-        .foto-card:nth-child(odd) { transform: rotate(-1.5deg); }
-        .foto-card:nth-child(even) { transform: rotate(1.5deg); }
+        /* Rotación aleatoria para que parezcan fotos tiradas sobre una mesa rosa */
+        .foto-card:nth-child(3n+1) { transform: rotate(-3deg); }
+        .foto-card:nth-child(3n+2) { transform: rotate(2deg); }
+        .foto-card:nth-child(3n+3) { transform: rotate(-1deg); }
 
         .foto-card:hover {
-            transform: rotate(0deg) scale(1.05);
-            z-index: 5;
+            transform: rotate(0deg) scale(1.1);
+            z-index: 10;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
         }
 
         .foto-card img {
             width: 100%;
-            height: 250px;
+            height: 280px;
             object-fit: cover;
-            border: 1px solid #f0f0f0;
+            border: 1px solid #fdfdfd;
         }
 
         .controls {
@@ -93,32 +94,34 @@
         }
 
         .btn {
-            background: var(--negro);
-            color: var(--oro);
-            border: 2px solid var(--oro);
-            padding: 10px 20px;
+            background: var(--blanco);
+            color: var(--negro);
+            border: 2px solid var(--negro);
+            padding: 12px 25px;
             border-radius: 50px;
             cursor: pointer;
             font-weight: 600;
             text-decoration: none;
             display: inline-block;
             transition: 0.3s;
+            margin: 5px;
         }
 
         .btn:hover {
-            background: var(--oro);
-            color: var(--negro);
+            background: var(--negro);
+            color: var(--rosa-fondo);
         }
 
         #loader {
             color: var(--negro);
             font-weight: 600;
+            margin-top: 20px;
         }
 
         @media (max-width: 600px) {
-            h1 { font-size: 1.5rem; }
-            .grid { grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-            .foto-card img { height: 180px; }
+            h1 { font-size: 1.8rem; }
+            .grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 15px; }
+            .foto-card img { height: 200px; }
         }
     </style>
 </head>
@@ -131,11 +134,11 @@
 
     <div class="container">
         <div class="controls">
-            <a href="/" class="btn">➕ Subir mi foto</a>
-            <button class="btn" onclick="cargarFotos()">🔄 Actualizar</button>
+            <a href="/" class="btn">📸 SUBIR MÁS FOTOS</a>
+            <button class="btn" onclick="cargarFotos()">🔄 REFRESCAR MURO</button>
         </div>
 
-        <div id="loader" style="text-align: center;">Cargando momentos mágicos...</div>
+        <div id="loader" style="text-align: center;">Buscando fotos bonitas...</div>
         <div class="grid" id="galeria"></div>
     </div>
 
@@ -152,23 +155,24 @@
                 grid.innerHTML = ''; 
 
                 if (fotos.length === 0) {
-                    grid.innerHTML = '<p style="grid-column: 1/-1;">El muro está esperando la primera foto...</p>';
+                    grid.innerHTML = '<p style="grid-column: 1/-1; text-align: center;">¡El muro está vacío! Sube la primera foto para Conchi. 🎂</p>';
                     return;
                 }
 
                 fotos.forEach(url => {
                     const card = document.createElement('div');
                     card.className = 'foto-card';
-                    card.innerHTML = `<img src="${url}" alt="Recuerdo de Conchi">`;
+                    card.innerHTML = `<img src="${url}" alt="Recuerdo">`;
                     grid.appendChild(card);
                 });
             } catch (e) {
+                console.error(e);
                 loader.innerText = "Error al conectar con la galería.";
             }
         }
 
         cargarFotos();
-        // Se actualiza cada 30 segundos
+        // Se actualiza cada 30 segundos automáticamente
         setInterval(cargarFotos, 30000);
     </script>
 </body>
