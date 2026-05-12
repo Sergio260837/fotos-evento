@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>📸 Muro de Recuerdos</title>
+    <style>
+        body { font-family: sans-serif; background: #f7f1e3; text-align: center; margin: 0; padding: 20px; }
+        h1 { color: #ff4757; font-family: 'Arial'; }
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); 
+            gap: 10px; 
+            padding: 20px; 
+        }
+        img { 
+            width: 100%; 
+            height: 150px; 
+            object-fit: cover; 
+            border-radius: 10px; 
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        .btn-refresh { 
+            background: #2ed573; color: white; border: none; padding: 10px 20px; 
+            border-radius: 50px; cursor: pointer; font-size: 16px; margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>📸 Galería del Evento</h1>
+    <button class="btn-refresh" onclick="cargarFotos()">🔄 Actualizar Fotos</button>
+    <div class="grid" id="galeria">
+        <p>Cargando fotos...</p>
+    </div>
+
+    <script>
+        async function cargarFotos() {
+            const grid = document.getElementById('galeria');
+            try {
+                const res = await fetch('/galeria');
+                const fotos = await res.json();
+                grid.innerHTML = ''; // Limpiar
+                
+                if (fotos.length === 0) {
+                    grid.innerHTML = '<p>Aún no hay fotos. ¡Sé el primero en subir una!</p>';
+                    return;
+                }
+
+                fotos.forEach(url => {
+                    const img = document.createElement('img');
+                    img.src = url;
+                    grid.appendChild(img);
+                });
+            } catch (e) {
+                grid.innerHTML = '<p>Error al cargar las fotos.</p>';
+            }
+        }
+        // Cargar al entrar
+        cargarFotos();
+        // Auto-actualizar cada 30 segundos
+        setInterval(cargarFotos, 30000);
+    </script>
+</body>
+</html>
